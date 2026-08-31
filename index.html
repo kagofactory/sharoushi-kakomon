@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>社労士試験 過去問集</title>
+<meta name="description" content="社会保険労務士（社労士）試験の過去問を年度・科目別に演習できる無料サイト。条文・判例・通達番号を明示した解説付き。2027年受験に向けた法改正情報も掲載。">
+<link rel="canonical" href="https://sharoushi-kakomon-lab.example/index.html">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <h1><a href="index.html">社労士過去問ラボ</a></h1>
+  <nav class="site-nav"><a href="topics.html">法改正・白書対策</a></nav>
+</header>
+
+<main id="app">
+
+  <!-- ===== 出題設定画面 ===== -->
+  <section id="view-setup" class="view">
+    <div class="card progress-card">
+      <span class="progress-count" id="progress-count">読み込み中…</span>
+    </div>
+
+    <div class="card resume-card hidden" id="resume-card">
+      <h2>続きから始める</h2>
+      <p id="resume-card-text"></p>
+      <button id="resume-btn" class="btn-primary">続きから始める</button>
+    </div>
+
+    <div class="card">
+      <h2>科目から選ぶ</h2>
+      <p class="subject-grid-note">クリックするとすぐに最新年度の問題を解き始めます。</p>
+      <div class="subject-grid">
+        <a class="subject-card" href="index.html?exam=data/r2025-s0.json&amp;mode=single&amp;autostart=1"><h3>労働基準法及び労働安全衛生法</h3><p>10年度分・約500肢</p></a>
+        <a class="subject-card" href="index.html?exam=data/r2025-s1.json&amp;mode=single&amp;autostart=1"><h3>労働者災害補償保険法（徴収法含む）</h3><p>10年度分・約500肢</p></a>
+        <a class="subject-card" href="index.html?exam=data/r2025-s2.json&amp;mode=single&amp;autostart=1"><h3>雇用保険法（徴収法含む）</h3><p>10年度分・約500肢</p></a>
+        <a class="subject-card" href="index.html?exam=data/r2025-s3.json&amp;mode=single&amp;autostart=1"><h3>一般常識（労一・社一）</h3><p>10年度分・約500肢</p></a>
+        <a class="subject-card" href="index.html?exam=data/r2025-s4.json&amp;mode=single&amp;autostart=1"><h3>健康保険法</h3><p>10年度分・約500肢</p></a>
+        <a class="subject-card" href="index.html?exam=data/r2025-s5.json&amp;mode=single&amp;autostart=1"><h3>厚生年金保険法</h3><p>10年度分・約500肢</p></a>
+        <a class="subject-card" href="index.html?exam=data/r2025-s6.json&amp;mode=single&amp;autostart=1"><h3>国民年金法</h3><p>10年度分・約500肢</p></a>
+      </div>
+      <p class="subject-year-links">他の年度を選ぶ：
+        <a href="subjects/s0.html">労基・安衛</a> ・
+        <a href="subjects/s1.html">労災</a> ・
+        <a href="subjects/s2.html">雇用</a> ・
+        <a href="subjects/s3.html">一般常識</a> ・
+        <a href="subjects/s4.html">健保</a> ・
+        <a href="subjects/s5.html">厚年</a> ・
+        <a href="subjects/s6.html">国年</a>
+      </p>
+    </div>
+
+    <div class="card" id="setup-range-card">
+      <h2>出題範囲を選ぶ</h2>
+
+      <div class="field">
+        <label for="exam-select">回・年度</label>
+        <select id="exam-select"></select>
+      </div>
+
+      <div class="field">
+        <label for="subject-select">科目</label>
+        <select id="subject-select">
+          <option value="__all__">すべての科目</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>出題順</label>
+        <div class="radio-row">
+          <label><input type="radio" name="order" value="sequential" checked> 番号順</label>
+          <label><input type="radio" name="order" value="random"> ランダム</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>出題形式</label>
+        <div class="radio-row">
+          <label><input type="radio" name="mode" value="single" checked> 肢別（1問1答）</label>
+          <label><input type="radio" name="mode" value="group"> 5択実戦（A〜Eをまとめて解答）</label>
+        </div>
+      </div>
+
+      <button id="start-btn" class="btn-primary">演習を始める</button>
+    </div>
+
+    <div class="card note-card">
+      <p>
+        本サイトの問題文・選択肢は、社会保険労務士試験（実施：全国社会保険労務士会連合会、
+        厚生労働大臣から委託）の過去問題を、文言を改変せずに使用しています。
+      </p>
+      <p>
+        正答は同連合会公表の試験問題・正解に基づきます。解説は<b>AI（生成AI）が条文・通達等をもとに作成した下書きで、
+        社会保険労務士など専門家によるレビューを経ていません。</b>内容の正確性を保証するものではなく、
+        法的助言でもありません。実施団体とは関係のない個人制作のサイトです。
+        法改正等により、現在では成立しない設問が含まれる場合があります。
+        誤りに気づいた場合は各問題ページの「誤りを報告する」からご連絡ください。
+      </p>
+      <p><b>本サイトは受験対策のための学習教材であり、個別の労務相談・法的助言を行うものではありません。</b>
+        実際の労務管理・手続きについては、社会保険労務士等の専門家にご相談ください。</p>
+    </div>
+  </section>
+
+  <!-- ===== 出題画面 ===== -->
+  <section id="view-quiz" class="view hidden">
+    <div class="quiz-status">
+      <span id="quiz-progress"></span>
+      <span id="quiz-score"></span>
+    </div>
+
+    <div id="quiz-single" class="card">
+      <div class="q-meta">
+        <span id="q-subject" class="badge"></span>
+        <span id="q-number"></span>
+      </div>
+      <p id="q-text" class="q-text"></p>
+      <div id="q-choices" class="choices"></div>
+      <p id="q-feedback" class="feedback hidden"></p>
+      <div id="q-law-status" class="law-status hidden"></div>
+      <div id="q-explanation" class="explanation hidden">
+        <h3>解説</h3>
+        <p id="q-explanation-text"></p>
+        <ul id="q-explanation-articles" class="articles"></ul>
+      </div>
+      <div id="q-review-status" class="review-status hidden"></div>
+      <div class="q-actions">
+        <button id="next-btn" class="btn-primary hidden">次の問題へ</button>
+      </div>
+    </div>
+
+    <div id="quiz-group" class="card hidden">
+      <div class="q-meta">
+        <span id="g-subject" class="badge"></span>
+        <span id="g-number"></span>
+      </div>
+      <div id="g-statements" class="statements"></div>
+      <div class="group-question">
+        <p id="g-prompt" class="group-prompt"></p>
+        <div id="g-options" class="group-options"></div>
+      </div>
+      <p id="g-feedback" class="feedback hidden"></p>
+      <div id="g-explanation" class="explanation hidden">
+        <h3>解答・解説</h3>
+        <div id="g-explanation-list" class="group-explanation-list"></div>
+      </div>
+      <div class="q-actions">
+        <button id="next-group-btn" class="btn-primary hidden">次の問題へ</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 結果画面 ===== -->
+  <section id="view-result" class="view hidden">
+    <div class="card">
+      <h2>結果</h2>
+      <p id="result-score" class="result-score"></p>
+      <div id="result-list" class="result-list"></div>
+      <div class="q-actions">
+        <button id="retry-wrong-btn" class="btn-primary">間違えた問題だけ再挑戦</button>
+        <button id="back-setup-btn" class="btn-secondary">出題設定に戻る</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>出典: 社会保険労務士試験オフィシャルサイト（<a href="https://www.sharosi-siken.or.jp/results/" target="_blank" rel="noopener">全国社会保険労務士会連合会 試験センター</a>）／ 非公式の個人学習用サイトです。解説は独自作成。</p>
+  <p class="footer-links"><a href="terms.html">利用規約</a> ・ <a href="privacy.html">プライバシーポリシー</a></p>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>
