@@ -124,12 +124,42 @@ def render_review_status(item):
     </div>'''
 
 
+def parse_explanation_text(text):
+    """解説文の先頭「正しい。」「誤り。」と、末尾の「（確度中）」を本文から切り出す
+    （js/app.js の parseExplanationText と同じ規約）"""
+    body = text
+    verdict = None
+    m = re.match(r"^(正しい|誤り)[。.]?\s*", body)
+    if m:
+        verdict = m.group(1)
+        body = body[m.end():]
+    is_uncertain = False
+    m = re.search(r"\s*（確度中）\s*$", body)
+    if m:
+        is_uncertain = True
+        body = body[:m.start()]
+    return verdict, is_uncertain, body
+
+
 def render_explanation(item):
     exp = item.get("explanation")
     if not exp:
         return '<p class="q-pending">解説は準備中です。</p>'
+    verdict, is_uncertain, body = parse_explanation_text(exp)
+
+    head_html = ""
+    if verdict or is_uncertain:
+        parts = []
+        if verdict:
+            cls = "is-correct" if verdict == "正しい" else "is-wrong"
+            label = "○ 正しい" if verdict == "正しい" else "× 誤り"
+            parts.append(f'<span class="explanation-verdict {cls}">{label}</span>')
+        if is_uncertain:
+            parts.append('<span class="confidence-badge">確度中</span>')
+        head_html = f'<div class="explanation-head">{"".join(parts)}</div>'
+
     ref_date = item.get("law_reference_date")
-    exp_text = esc(exp) + (f"<br><small>（法令基準日: {esc(ref_date)}）</small>" if ref_date else "")
+    exp_text = esc(body) + (f"<br><small>（法令基準日: {esc(ref_date)}）</small>" if ref_date else "")
 
     articles = item.get("related_articles") or []
     lis = "".join(f"<li>{esc(a)}</li>" for a in articles)
@@ -138,7 +168,7 @@ def render_explanation(item):
         lis += f'<li class="verification-note">{esc(note)}</li>'
     articles_html = f'<ul class="articles">{lis}</ul>' if lis else ""
 
-    return f'<p>{exp_text}</p>{articles_html}'
+    return f'{head_html}<p>{exp_text}</p>{articles_html}'
 
 
 PAGE_TMPL = """<!doctype html>

@@ -392,13 +392,43 @@
     nextBtn.classList.remove("hidden");
   }
 
+  // 解説文の先頭「正しい。」「誤り。」と、末尾の「（確度中）」を本文から切り出す。
+  // データは一貫してこの2パターンで書かれている（このプロジェクトの執筆規約）。
+  function parseExplanationText(text) {
+    let body = text;
+    let verdict = null;
+    const verdictMatch = body.match(/^(正しい|誤り)[。.]?\s*/);
+    if (verdictMatch) {
+      verdict = verdictMatch[1];
+      body = body.slice(verdictMatch[0].length);
+    }
+    let isUncertain = false;
+    const confMatch = body.match(/\s*（確度中）\s*$/);
+    if (confMatch) {
+      isUncertain = true;
+      body = body.slice(0, confMatch.index);
+    }
+    return { verdict, isUncertain, body };
+  }
+
   function renderExplanation(q) {
     const box = el("q-explanation");
     if (!q.explanation) {
       box.classList.add("hidden");
       return;
     }
-    let text = q.explanation;
+    const { verdict, isUncertain, body } = parseExplanationText(q.explanation);
+
+    const verdictEl = el("q-explanation-verdict");
+    if (verdict) {
+      verdictEl.textContent = verdict === "正しい" ? "○ 正しい" : "× 誤り";
+      verdictEl.className = `explanation-verdict ${verdict === "正しい" ? "is-correct" : "is-wrong"}`;
+    } else {
+      verdictEl.className = "explanation-verdict hidden";
+    }
+    el("q-explanation-confidence").classList.toggle("hidden", !isUncertain);
+
+    let text = body;
     if (q.law_reference_date) {
       text += `\n（法令基準日: ${q.law_reference_date}）`;
     }
@@ -563,9 +593,17 @@
         const head = document.createElement("p");
         head.className = "group-explanation-row-head";
         head.textContent = `${label}（${isItemCorrect ? "○ 正しい" : "× 誤り"}）`;
+        const parsed = parseExplanationText(item.explanation);
+        if (parsed.isUncertain) {
+          const badge = document.createElement("span");
+          badge.className = "confidence-badge";
+          badge.textContent = "確度中";
+          head.appendChild(document.createTextNode(" "));
+          head.appendChild(badge);
+        }
         const body = document.createElement("p");
         body.className = "group-explanation-row-body";
-        let text = item.explanation;
+        let text = parsed.body;
         if (item.law_reference_date) text += `\n（法令基準日: ${item.law_reference_date}）`;
         body.textContent = text;
         row.appendChild(head);
