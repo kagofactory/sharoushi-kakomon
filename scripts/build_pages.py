@@ -31,7 +31,7 @@ SITE_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(SITE_ROOT, "data")
 OUT_DIR = os.path.join(SITE_ROOT, "q")
 SUBJECTS_OUT_DIR = os.path.join(SITE_ROOT, "subjects")
-SITE_URL = "https://sharoushi-kakomon-lab.example"  # 実際のドメイン取得後に置き換える
+SITE_URL = "https://sharoushi-kakomon.com"
 
 # 科目インデックス（rYYYY-sN の N）は全10年度で共通であることを確認済み（CLAUDE.md参照）
 SUBJECT_META = [
@@ -56,7 +56,7 @@ REVIEW_STATUS_LABEL = {
     "expert_reviewed": "社労士レビュー済み",
 }
 
-CONTACT_EMAIL = "contact@sharoushi-kakomon-lab.example"  # ドメイン取得後、実際の連絡先に置き換える
+CONTACT_EMAIL = "kagofactory@gmail.com"
 
 
 def esc(s):
@@ -409,7 +409,6 @@ def main():
 
     print(f"\nsitemap.xml: {len(sitemap_urls)}件のURL")
     print("robots.txt を書き出しました")
-    print(f"\n※ SITE_URL は仮の値です。実際のドメイン取得後、このスクリプト冒頭の SITE_URL 定数を書き換えて再実行してください。")
 
 
 if __name__ == "__main__":

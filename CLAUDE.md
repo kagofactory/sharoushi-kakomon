@@ -86,14 +86,26 @@
 cd scripts && python build_pages.py
 ```
 
-## ドメイン取得後にやること
+## ドメイン取得・公開（2026年8月31日完了）
 
-`scripts/build_pages.py` 冒頭の `SITE_URL` 定数（現在は仮の `https://sharoushi-kakomon-lab.example`）と、
-`index.html` / `topics.html` の `<link rel="canonical">` を実際のドメインに置き換えて再ビルドする。
+ドメイン `sharoushi-kakomon.com` をお名前.comで取得し、GitHub（`github.com/kagofactory/sharoushi-kakomon`）
+にpush、GitHub Pagesで公開設定済み。DNS設定（Aレコード4件＋wwwのCNAME、ネームサーバーを
+`01〜04.dnsv.jp`に変更）も完了し、反映待ちの状態。`scripts/build_pages.py`の`SITE_URL`定数・
+`CONTACT_EMAIL`定数（実際の連絡先は運営者の既存メール`kagofactory@gmail.com`を使用、独自ドメインの
+メール機能は別途未設定のため）、および`index.html`等の`<link rel="canonical">`はすべて実ドメインに
+置き換え済み。リポジトリルートに`CNAME`ファイル（内容：`sharoushi-kakomon.com`）を追加している。
+今後データを追加した際は、`build_pages.py`再実行後に`git add -A && git commit && git push`で
+そのまま本番反映される。
 
-## 著作権の方針
+## 著作権の方針（2026年8月31日：運営者が実施団体に電話確認済み）
 
-- 過去問の問題文・正誤（○/×）は実施団体（全国社会保険労務士会連合会）の試験問題そのもの。転載は許諾未確認のリスクを受容する前提で進めている
+- **試験問題文・選択肢は著作権法13条2号（告示・訓令・通達その他これらに類するもの）に該当し、
+  著作権の目的とならないことを確認済み**（運営者が社労士試験センターに直接電話で確認）。
+  ただし、問題文中に他社（書籍・論文等の一般の著作物）からの引用がある場合は、その引用部分に
+  ついては元の著作者の著作権が別途残る。収録済み3,494肢について「」で囲まれた長め（20文字以上）の
+  引用をすべて確認した結果、法令条文（13条1号該当）・行政の告示通達等（13条2号該当）・裁判所
+  判例（13条3号該当）のいずれかに限られており、一般書籍・論文からの引用は確認されなかった
+  （2026年8月31日確認）。今後新たな年度・科目のデータを追加する際も、同様の引用チェックを行うこと
 - **解説・条文根拠は必ず自社で執筆する**。第三者サイト（社労士過去問ランド等）の解説文をそのまま複製しない
 - サンプルデータ（`data/sample.json` 由来のページ）は実際の過去問ではないため `noindex` にしてある
 
@@ -117,8 +129,8 @@ cd scripts && python build_pages.py
 - **解説には必ず一次情報（条文番号・通達番号等）を明記する**（`related_articles`）。専門家でなくても
   e-Gov法令検索等と照合すれば正誤を確認できる状態を保つのが生命線
 - 各問題の `review_status` は既定で `ai_unreviewed`。有資格者の確認を経たものだけ `expert_reviewed` に変更する
-- 各ページに「誤りを報告する」導線（`CONTACT_EMAIL` 宛のmailto）を設置済み。ドメイン取得後、
-  `scripts/build_pages.py` と `js/app.js` 内の `contact@sharoushi-kakomon-lab.example` を実際の連絡先に置き換える
+- 各ページに「誤りを報告する」導線（`CONTACT_EMAIL` 宛のmailto）を設置済み。連絡先は
+  `kagofactory@gmail.com`（`scripts/build_pages.py`・`js/app.js`・`terms.html`・`privacy.html`に反映済み）
 - **訂正を受けたら、直す前に必ず一次情報で裏取りする**：①e-Gov法令検索で条文の現在の内容を確認、
   ②実施団体公表の「合格基準及び正答」PDFで正解を確認。裏取りできない・判断に迷う指摘は、
   安易に反映せず保留し、可能であれば有資格の社労士に確認する

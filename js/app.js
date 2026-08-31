@@ -341,7 +341,7 @@
     const label = REVIEW_STATUS_LABEL[q.review_status] || q.review_status;
     const mailBody = encodeURIComponent(`問題ID: ${q.id}\n指摘内容:\n`);
     box.innerHTML = `<span class="review-badge review-badge--${q.review_status}">${label}</span>` +
-      `<a class="report-link" href="mailto:contact@sharoushi-kakomon-lab.example?subject=${encodeURIComponent("誤りの報告：" + q.id)}&body=${mailBody}">誤りを報告する</a>`;
+      `<a class="report-link" href="mailto:kagofactory@gmail.com?subject=${encodeURIComponent("誤りの報告：" + q.id)}&body=${mailBody}">誤りを報告する</a>`;
     box.classList.remove("hidden");
   }
 
