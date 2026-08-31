@@ -71,6 +71,17 @@ def esc(s):
     )
 
 
+def short_exam_label(exam_label):
+    """タイトルタグ用に、末尾の（完全収録・50肢）等の収録状況注記を取り除いた短い表記を作る"""
+    return re.sub(r"（[^（）]*）\s*$", "", exam_label).strip()
+
+
+def exam_round_year(exam_label):
+    """「第57回（令和7年度）」部分だけを取り出す（科目名を含む部分と重複させたくない場面用）"""
+    m = re.match(r"^(第\d+回（[^）]+）)", exam_label)
+    return m.group(1) if m else exam_label
+
+
 def slug_of(item_id, exam_id):
     """id から exam_id の接頭辞を取り除いたものをファイル名に使う"""
     if item_id.startswith(exam_id + "-"):
@@ -143,6 +154,9 @@ PAGE_TMPL = """<!doctype html>
 <script type="application/ld+json">
 {jsonld}
 </script>
+<script type="application/ld+json">
+{breadcrumb_jsonld}
+</script>
 </head>
 <body>
 
@@ -210,6 +224,8 @@ def build_question_page(item, exam_label, noindex=False):
     description = (plain_text[:110] + "…") if len(plain_text) > 110 else plain_text
 
     canonical = f"{SITE_URL}/q/{item['exam']}/{slug_of(item['id'], item['exam'])}.html"
+    exam_id = item["exam"]
+    round_year = exam_round_year(exam_label)
 
     jsonld = {
         "@context": "https://schema.org",
@@ -225,13 +241,24 @@ def build_question_page(item, exam_label, noindex=False):
         },
     }
 
+    breadcrumb_jsonld = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "トップ", "item": f"{SITE_URL}/index.html"},
+            {"@type": "ListItem", "position": 2, "name": exam_label, "item": f"{SITE_URL}/q/{exam_id}/index.html"},
+            {"@type": "ListItem", "position": 3, "name": item["number"]},
+        ],
+    }
+
     return PAGE_TMPL.format(
-        title=f"{esc(item['subject'])} {esc(item['number'])}｜社労士過去問 {esc(exam_label)} - 社労士過去問ラボ",
+        title=f"{esc(item['subject'])} {esc(item['number'])}の過去問・解説｜{esc(round_year)} - 社労士過去問ラボ",
         description=esc(description),
         canonical=canonical,
         robots_tag='<meta name="robots" content="noindex">' if noindex else "",
         css_path="../../css/style.css",
         jsonld=json.dumps(jsonld, ensure_ascii=False, indent=2),
+        breadcrumb_jsonld=json.dumps(breadcrumb_jsonld, ensure_ascii=False, indent=2),
         root_path="../../",
         exam_index="index.html",
         exam_label=esc(exam_label),
@@ -251,7 +278,7 @@ INDEX_TMPL = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{exam_label}｜社労士過去問ラボ</title>
+<title>{short_label}の過去問一覧・解説｜社労士過去問ラボ</title>
 <meta name="description" content="{exam_label}の過去問一覧。問題ごとに解説・法改正ステータス付きで確認できます。">
 <link rel="stylesheet" href="../../css/style.css">
 </head>
@@ -282,7 +309,7 @@ def build_exam_index(exam_id, exam_label, items):
         f'<li><a href="{slug_of(it["id"], exam_id)}.html">{esc(it["number"])} {esc(it["subject"])}</a></li>'
         for it in items
     )
-    return INDEX_TMPL.format(exam_label=esc(exam_label), items_html=lis)
+    return INDEX_TMPL.format(exam_label=esc(exam_label), short_label=esc(short_exam_label(exam_label)), items_html=lis)
 
 
 SUBJECT_TMPL = """<!doctype html>
@@ -290,10 +317,13 @@ SUBJECT_TMPL = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{subject_name}の過去問一覧｜社労士過去問ラボ</title>
+<title>{subject_name}の過去問一覧・解説｜社労士過去問ラボ</title>
 <meta name="description" content="社労士試験「{subject_name}」の過去問を年度別に一覧。{year_count}年度分・{total_items}肢を収録。年度ごとに問題を見る、または演習を始めることができます。">
 <link rel="canonical" href="{canonical}">
 <link rel="stylesheet" href="../css/style.css">
+<script type="application/ld+json">
+{breadcrumb_jsonld}
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -330,10 +360,19 @@ def build_subject_page(subject_key, subject_name, rows):
         f'</li>'
         for r in rows
     )
+    breadcrumb_jsonld = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "トップ", "item": f"{SITE_URL}/index.html"},
+            {"@type": "ListItem", "position": 2, "name": subject_name},
+        ],
+    }
     return SUBJECT_TMPL.format(
         subject_name=esc(subject_name),
         year_count=len(rows),
         total_items=total_items,
+        breadcrumb_jsonld=json.dumps(breadcrumb_jsonld, ensure_ascii=False, indent=2),
         canonical=f"{SITE_URL}/subjects/{subject_key}.html",
         rows_html=row_lis,
     )
