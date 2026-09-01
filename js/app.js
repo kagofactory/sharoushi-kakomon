@@ -122,6 +122,8 @@
   function renderResumeCard(saved, savedExam) {
     el("resume-card-text").textContent =
       `${savedExam.label}（${saved.qIndex}/${saved.queueIds.length}問まで進行中、正解${saved.score}問）`;
+    const pct = saved.queueIds.length > 0 ? Math.round((saved.qIndex / saved.queueIds.length) * 100) : 0;
+    el("resume-progress-bar-fill").style.width = `${pct}%`;
     el("resume-card").classList.remove("hidden");
     el("resume-btn").onclick = () => resumeQuiz(saved);
   }
@@ -216,6 +218,11 @@
     return al < bl ? -1 : al > bl ? 1 : 0;
   }
 
+  function updateQuizProgressBar() {
+    const pct = queue.length > 0 ? Math.round((qIndex / queue.length) * 100) : 0;
+    el("quiz-progress-bar-fill").style.width = `${pct}%`;
+  }
+
   function shuffle(arr) {
     const a = arr.slice();
     for (let i = a.length - 1; i > 0; i--) {
@@ -304,6 +311,7 @@
   function renderSingleQuestion() {
     const q = queue[qIndex];
     el("quiz-progress").textContent = `${qIndex + 1} / ${queue.length} 問`;
+    updateQuizProgressBar();
     el("quiz-score").textContent = `正解 ${score} 問`;
     el("q-subject").textContent = q.subject;
     el("q-number").textContent = `問題 ${q.number}`;
@@ -487,6 +495,7 @@
     currentSelectedOption = null;
 
     el("quiz-progress").textContent = `${qIndex + 1} / ${queue.length} 問`;
+    updateQuizProgressBar();
     el("quiz-score").textContent = `正解 ${score} 問`;
     el("g-subject").textContent = g.subject;
     el("g-number").textContent = g.baseNumber;

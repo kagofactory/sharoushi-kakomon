@@ -121,6 +121,23 @@ select {
   padding: 0 4px;
 }
 
+.quiz-progress-bar {
+  height: 6px;
+  background: var(--badge-bg);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.quiz-progress-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+@media (prefers-reduced-motion: reduce) { .quiz-progress-bar-fill { transition: none; } }
+.resume-card .quiz-progress-bar { margin: 4px 0 14px; }
+
 .q-meta {
   display: flex;
   justify-content: space-between;
