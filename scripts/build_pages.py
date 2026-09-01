@@ -413,7 +413,7 @@ def main():
     with open(exams_path, encoding="utf-8") as f:
         exams = json.load(f)
 
-    sitemap_urls = [f"{SITE_URL}/index.html", f"{SITE_URL}/topics.html"]
+    sitemap_urls = [f"{SITE_URL}/index.html", f"{SITE_URL}/topics.html", f"{SITE_URL}/topics2.html"]
     subject_rows = defaultdict(list)  # "sN" -> [{exam_id, year_label, item_count, file}]
 
     for exam in exams:
