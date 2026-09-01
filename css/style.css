@@ -79,8 +79,21 @@ select {
   background: #fff;
 }
 
-.radio-row { display: flex; gap: 20px; }
-.radio-row label { font-weight: normal; display: flex; align-items: center; gap: 4px; }
+.radio-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.radio-row label {
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  min-height: 44px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.radio-row label:has(input:checked) { border-color: var(--primary); background: var(--badge-bg); }
+.radio-row input[type="radio"] { width: 16px; height: 16px; }
 
 .btn-primary, .btn-secondary {
   display: inline-block;
@@ -91,7 +104,7 @@ select {
   border: none;
   cursor: pointer;
 }
-.btn-primary { background: var(--accent); color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
+.btn-primary { background: var(--accent); color: var(--primary-dark); box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
 .btn-primary:hover { background: var(--accent-dark); }
 .btn-secondary { background: #fff; color: var(--primary); border: 1px solid var(--primary); font-weight: normal; }
 
@@ -161,7 +174,7 @@ select {
   font-size: 0.85rem;
 }
 .law-status--valid { background: var(--correct-bg); color: var(--correct); }
-.law-status--amended { background: #fff4de; color: #9a6b00; }
+.law-status--amended { background: #fff4de; color: #855c00; }
 .law-status--repealed { background: var(--wrong-bg); color: var(--wrong); }
 .law-status--unverified { background: var(--badge-bg); color: var(--muted); }
 
@@ -190,7 +203,7 @@ select {
   padding: 3px 10px;
   border-radius: 999px;
   background: #fff4de;
-  color: #9a6b00;
+  color: #855c00;
 }
 .articles { margin: 8px 0 0; padding-left: 1.2em; font-size: 0.85rem; color: var(--muted); }
 .articles li { margin-bottom: 2px; }
@@ -291,9 +304,13 @@ select {
 .subject-year-label { flex: 1; font-size: 0.92rem; min-width: 160px; }
 .subject-year-row .btn-primary,
 .subject-year-row .btn-secondary {
-  padding: 6px 14px;
+  padding: 12px 14px;
   font-size: 0.85rem;
   text-decoration: none;
+  min-height: 44px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
 }
 
 /* ===== トップページ：科目カード ===== */
@@ -362,9 +379,10 @@ select {
   align-items: center;
   justify-content: center;
 }
-.statement-text { flex: 1; white-space: pre-wrap; font-size: 0.95rem; }
+.statement-text { flex: 1; min-width: 0; white-space: pre-wrap; font-size: 0.95rem; }
 .toggle-btn {
   flex: 1;
+  min-width: 0;
   padding: 8px 10px;
   border: 1px solid var(--border);
   border-radius: 6px;
