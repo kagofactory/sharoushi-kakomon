@@ -180,6 +180,19 @@ PAGE_TMPL = """<!doctype html>
 <meta name="description" content="{description}">
 <link rel="canonical" href="{canonical}">
 {robots_tag}
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="社労士過去問ラボ">
+<meta property="og:title" content="{title}">
+<meta property="og:description" content="{description}">
+<meta property="og:url" content="{canonical}">
+<meta property="og:image" content="{og_image}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{title}">
+<meta name="twitter:description" content="{description}">
+<meta name="twitter:image" content="{og_image}">
 <link rel="stylesheet" href="{css_path}">
 <script type="application/ld+json">
 {jsonld}
@@ -286,6 +299,7 @@ def build_question_page(item, exam_label, noindex=False):
         description=esc(description),
         canonical=canonical,
         robots_tag='<meta name="robots" content="noindex">' if noindex else "",
+        og_image=f"{SITE_URL}/images/og-image.png",
         css_path="../../css/style.css",
         jsonld=json.dumps(jsonld, ensure_ascii=False, indent=2),
         breadcrumb_jsonld=json.dumps(breadcrumb_jsonld, ensure_ascii=False, indent=2),
@@ -350,6 +364,19 @@ SUBJECT_TMPL = """<!doctype html>
 <title>{subject_name}の過去問一覧・解説｜社労士過去問ラボ</title>
 <meta name="description" content="社労士試験「{subject_name}」の過去問を年度別に一覧。{year_count}年度分・{total_items}肢を収録。年度ごとに問題を見る、または演習を始めることができます。">
 <link rel="canonical" href="{canonical}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="社労士過去問ラボ">
+<meta property="og:title" content="{subject_name}の過去問一覧・解説｜社労士過去問ラボ">
+<meta property="og:description" content="社労士試験「{subject_name}」の過去問を年度別に一覧。{year_count}年度分・{total_items}肢を収録。">
+<meta property="og:url" content="{canonical}">
+<meta property="og:image" content="{og_image}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{subject_name}の過去問一覧・解説｜社労士過去問ラボ">
+<meta name="twitter:description" content="社労士試験「{subject_name}」の過去問を年度別に一覧。{year_count}年度分・{total_items}肢を収録。">
+<meta name="twitter:image" content="{og_image}">
 <link rel="stylesheet" href="../css/style.css">
 <script type="application/ld+json">
 {breadcrumb_jsonld}
@@ -404,6 +431,7 @@ def build_subject_page(subject_key, subject_name, rows):
         total_items=total_items,
         breadcrumb_jsonld=json.dumps(breadcrumb_jsonld, ensure_ascii=False, indent=2),
         canonical=f"{SITE_URL}/subjects/{subject_key}.html",
+        og_image=f"{SITE_URL}/images/og-image.png",
         rows_html=row_lis,
     )
 
