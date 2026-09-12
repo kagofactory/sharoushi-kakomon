@@ -251,7 +251,7 @@ PAGE_TMPL = """<!doctype html>
 
 <footer class="site-footer">
   <p>出典: 社会保険労務士試験オフィシャルサイト（全国社会保険労務士会連合会 試験センター）／ 非公式の個人学習用サイトです。解説は独自作成・専門家未レビュー。</p>
-  <p class="footer-links"><a href="{root_path}terms.html">利用規約</a> ・ <a href="{root_path}privacy.html">プライバシーポリシー</a></p>
+  <p class="footer-links"><a href="{root_path}terms.html">利用規約</a> ・ <a href="{root_path}privacy.html">プライバシーポリシー</a> ・ <a href="{root_path}updates.html">更新履歴</a></p>
 </footer>
 
 </body>
@@ -341,7 +341,7 @@ INDEX_TMPL = """<!doctype html>
 </main>
 <footer class="site-footer">
   <p>非公式の個人学習用サイトです。</p>
-  <p class="footer-links"><a href="../../terms.html">利用規約</a> ・ <a href="../../privacy.html">プライバシーポリシー</a></p>
+  <p class="footer-links"><a href="../../terms.html">利用規約</a> ・ <a href="../../privacy.html">プライバシーポリシー</a> ・ <a href="../../updates.html">更新履歴</a></p>
 </footer>
 </body>
 </html>
@@ -399,7 +399,7 @@ SUBJECT_TMPL = """<!doctype html>
 </main>
 <footer class="site-footer">
   <p>非公式の個人学習用サイトです。</p>
-  <p class="footer-links"><a href="../terms.html">利用規約</a> ・ <a href="../privacy.html">プライバシーポリシー</a></p>
+  <p class="footer-links"><a href="../terms.html">利用規約</a> ・ <a href="../privacy.html">プライバシーポリシー</a> ・ <a href="../updates.html">更新履歴</a></p>
 </footer>
 </body>
 </html>
