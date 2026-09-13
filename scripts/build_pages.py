@@ -89,6 +89,16 @@ def slug_of(item_id, exam_id):
     return item_id
 
 
+def number_sort_key(number_str):
+    """「問12-C」形式の number から自然順ソート用キーを作る
+    （js/app.js の numberSortKey と同じ規約。データファイルは複数セッションに
+    またがる追記で配列順が問番号順になっていないため、表示順はこれで揃える）"""
+    m = re.match(r"^問(\d+)(?:-([A-E]))?", str(number_str))
+    if not m:
+        return (float("inf"), str(number_str))
+    return (int(m.group(1)), m.group(2) or "")
+
+
 def render_choice(c, answer_num):
     is_correct = c["num"] == answer_num
     cls = "choice correct" if is_correct else "choice"
@@ -247,6 +257,7 @@ PAGE_TMPL = """<!doctype html>
   <p class="q-actions">
     <a class="btn-primary" href="{root_path}index.html">この年度・科目を演習する →</a>
   </p>
+{pager_html}
 </main>
 
 <footer class="site-footer">
@@ -259,7 +270,21 @@ PAGE_TMPL = """<!doctype html>
 """
 
 
-def build_question_page(item, exam_label, noindex=False):
+def render_pager(prev_item, next_item, exam_id):
+    if not prev_item and not next_item:
+        return ""
+    prev_html = (
+        f'<a class="btn-secondary" href="{esc(slug_of(prev_item["id"], exam_id))}.html">← 前の問題（{esc(prev_item["number"])}）</a>'
+        if prev_item else '<span></span>'
+    )
+    next_html = (
+        f'<a class="btn-secondary" href="{esc(slug_of(next_item["id"], exam_id))}.html">次の問題（{esc(next_item["number"])}）→</a>'
+        if next_item else '<span></span>'
+    )
+    return f'  <p class="q-pager">\n    {prev_html}\n    {next_html}\n  </p>'
+
+
+def build_question_page(item, exam_label, noindex=False, prev_item=None, next_item=None):
     choices_html = "\n      ".join(
         render_choice(c, item["answer"]) for c in item["choices"]
     )
@@ -314,6 +339,7 @@ def build_question_page(item, exam_label, noindex=False):
         explanation_html=render_explanation(item),
         review_status_html=render_review_status(item),
         source=esc(item.get("source", "")),
+        pager_html=render_pager(prev_item, next_item, exam_id),
     )
 
 
@@ -454,8 +480,14 @@ def main():
         exam_out_dir = os.path.join(OUT_DIR, exam_id)
         os.makedirs(exam_out_dir, exist_ok=True)
 
-        for item in items:
-            html = build_question_page(item, exam["label"], noindex=is_sample)
+        # 問題番号の自然順（js/app.jsのnumberSortKeyと同じ規約）で並べる。
+        # これにより「前の問題／次の問題」リンクと年度一覧ページの並び順が一致する。
+        items = sorted(items, key=lambda it: number_sort_key(it["number"]))
+
+        for i, item in enumerate(items):
+            prev_item = items[i - 1] if i > 0 else None
+            next_item = items[i + 1] if i < len(items) - 1 else None
+            html = build_question_page(item, exam["label"], noindex=is_sample, prev_item=prev_item, next_item=next_item)
             out_path = os.path.join(exam_out_dir, f"{slug_of(item['id'], exam_id)}.html")
             with open(out_path, "w", encoding="utf-8") as f:
                 f.write(html)

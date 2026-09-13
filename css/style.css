@@ -246,6 +246,9 @@ select {
 
 .q-actions { margin-top: 16px; display: flex; gap: 10px; }
 
+.q-pager { margin-top: 12px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.q-pager a { text-decoration: none; }
+
 .result-score { font-size: 1.3rem; font-weight: bold; }
 
 .result-list { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
