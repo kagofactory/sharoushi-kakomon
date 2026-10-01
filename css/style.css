@@ -439,3 +439,14 @@ select {
 .group-explanation-list { display: flex; flex-direction: column; gap: 10px; }
 .group-explanation-row-head { margin: 0; font-weight: bold; font-size: 0.85rem; color: var(--primary-dark); }
 .group-explanation-row-body { margin: 2px 0 0; font-size: 0.9rem; white-space: pre-wrap; }
+
+/* ===== 内部リンク：年度から選ぶ（トップ）・関連リンク（問題ページ／年度別一覧） ===== */
+.year-pick-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding: 8px 0; border-bottom: 1px dashed var(--border); }
+.year-pick-row:last-child { border-bottom: none; }
+.year-pick-label { font-weight: bold; color: var(--primary-dark); min-width: 9.5em; font-size: 0.92rem; }
+.year-pick-links, .related-links { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.year-pick-links a, .related-links a { display: inline-block; padding: 6px 2px; font-size: 0.9rem; }
+.related-card h3 { margin: 0 0 4px; font-size: 0.95rem; color: var(--primary-dark); }
+.related-card .related-links { margin: 0 0 14px; }
+.related-card .related-links:last-child { margin-bottom: 0; }
+.related-current { display: inline-block; padding: 6px 2px; font-size: 0.9rem; font-weight: bold; color: var(--muted); }

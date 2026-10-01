@@ -76,6 +76,43 @@ def short_exam_label(exam_label):
     return re.sub(r"（[^（）]*）\s*$", "", exam_label).strip()
 
 
+SUBJECT_SHORT = {
+    "s0": "労基・安衛", "s1": "労災", "s2": "雇用", "s3": "一般常識",
+    "s4": "健保", "s5": "厚年", "s6": "国年",
+}
+
+# main()で収録済みの年度×科目を詰める：[{"id": "r2025-s0", "year": "令和7年度", "subject": "s0"}, ...]（新しい年度順）
+ALL_EXAMS = []
+
+
+def render_related_nav(exam_id, root_path):
+    """同じ科目の他の年度／同じ年度の他の科目の年度別一覧ページへのリンク集（内部リンク強化用）"""
+    cur = next((e for e in ALL_EXAMS if e["id"] == exam_id), None)
+    if not cur:
+        return ""
+
+    def links(exams):
+        parts = []
+        for e in exams:
+            if e["id"] == exam_id:
+                parts.append(f'<span class="related-current">{esc(e["label"])}</span>')
+            else:
+                parts.append(f'<a href="{root_path}q/{e["id"]}/index.html">{esc(e["label"])}</a>')
+        return "\n    ".join(parts)
+
+    same_subject = [dict(e, label=e["year"]) for e in ALL_EXAMS if e["subject"] == cur["subject"]]
+    same_year = [dict(e, label=SUBJECT_SHORT.get(e["subject"], e["subject"])) for e in sorted(ALL_EXAMS, key=lambda x: x["subject"]) if e["year"] == cur["year"]]
+    subject_name = SUBJECT_SHORT.get(cur["subject"], cur["subject"])
+    return (
+        '  <div class="card related-card">\n'
+        f'    <h3>{esc(subject_name)}の他の年度</h3>\n'
+        f'    <p class="related-links">\n    {links(same_subject)}\n    </p>\n'
+        f'    <h3>{esc(cur["year"])}の他の科目</h3>\n'
+        f'    <p class="related-links">\n    {links(same_year)}\n    </p>\n'
+        '  </div>'
+    )
+
+
 def exam_round_year(exam_label):
     """「第57回（令和7年度）」部分だけを取り出す（科目名を含む部分と重複させたくない場面用）"""
     m = re.match(r"^(第\d+回（[^）]+）)", exam_label)
@@ -258,6 +295,7 @@ PAGE_TMPL = """<!doctype html>
     <a class="btn-primary" href="{root_path}index.html">この年度・科目を演習する →</a>
   </p>
 {pager_html}
+{related_html}
 </main>
 
 <footer class="site-footer">
@@ -340,6 +378,7 @@ def build_question_page(item, exam_label, noindex=False, prev_item=None, next_it
         review_status_html=render_review_status(item),
         source=esc(item.get("source", "")),
         pager_html=render_pager(prev_item, next_item, exam_id),
+        related_html=render_related_nav(exam_id, "../../"),
     )
 
 
@@ -364,6 +403,7 @@ INDEX_TMPL = """<!doctype html>
       {items_html}
     </ul>
   </div>
+{related_html}
 </main>
 <footer class="site-footer">
   <p>非公式の個人学習用サイトです。</p>
@@ -379,7 +419,7 @@ def build_exam_index(exam_id, exam_label, items):
         f'<li><a href="{slug_of(it["id"], exam_id)}.html">{esc(it["number"])} {esc(it["subject"])}</a></li>'
         for it in items
     )
-    return INDEX_TMPL.format(exam_label=esc(exam_label), short_label=esc(short_exam_label(exam_label)), items_html=lis)
+    return INDEX_TMPL.format(exam_label=esc(exam_label), short_label=esc(short_exam_label(exam_label)), items_html=lis, related_html=render_related_nav(exam_id, "../../"))
 
 
 SUBJECT_TMPL = """<!doctype html>
@@ -466,6 +506,12 @@ def main():
     exams_path = os.path.join(DATA_DIR, "exams.json")
     with open(exams_path, encoding="utf-8") as f:
         exams = json.load(f)
+
+    for ex in sorted(exams, key=lambda e: e["id"], reverse=True):
+        m_id = re.match(r"^r\d{4}-(s\d)$", ex["id"])
+        m_y = re.match(r"^第\d+回（([^）]+)）", ex["label"])
+        if m_id and m_y:
+            ALL_EXAMS.append({"id": ex["id"], "year": m_y.group(1), "subject": m_id.group(1)})
 
     sitemap_urls = [f"{SITE_URL}/", f"{SITE_URL}/topics.html", f"{SITE_URL}/topics2.html"]
     subject_rows = defaultdict(list)  # "sN" -> [{exam_id, year_label, item_count, file}]
