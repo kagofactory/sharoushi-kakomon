@@ -990,3 +990,7 @@ URL・科目インデックスの対応（0-6）を都度WebSearchで再確認�
 10年分の完了内訳：令和7年度・令和6年度・令和5年度・令和4年度・令和3年度・令和2年度・令和元年度・
 平成30年度・平成29年度・平成28年度（各7科目、計70科目）。総収録数：3,360肢（サンプル2肢を除く）。
 - 独自ドメイン取得後のSITE_URL置き換え
+
+## 【2026年10月25日】Q&A構造化データの不備を修正（Search Console検出）
+
+Search Consoleから「Q&Aの構造化データ」の問題（7件）の通知メールが届いたため修正した。問題ページのQAPage構造化データ（`scripts/build_pages.py`の`build_question_page`）に、`mainEntity`（Question）へ`answerCount`（重大）・`upvoteCount`・`datePublished`・`author`（Organization）を、`acceptedAnswer`（Answer）へ`url`・`upvoteCount`・`datePublished`・`author`を追加した。`datePublished`は各レコードの`last_verified`を使用（欠落時は`2026-09-13`）。全問題ページを再生成してコミット・公開済み。**公開後、Search Consoleの「Q&A」レポートで「修正を検証」を押すこと（要フォローアップ）。** 宅建過去問ラボ（takken-kakomon.jp）にも同じ修正を適用済み。
