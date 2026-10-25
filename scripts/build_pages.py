@@ -333,6 +333,9 @@ def build_question_page(item, exam_label, noindex=False, prev_item=None, next_it
     exam_id = item["exam"]
     round_year = exam_round_year(exam_label)
 
+    published_date = item.get("last_verified") or "2026-09-13"
+    author_org = {"@type": "Organization", "name": "社労士過去問ラボ", "url": SITE_URL}
+
     jsonld = {
         "@context": "https://schema.org",
         "@type": "QAPage",
@@ -340,9 +343,17 @@ def build_question_page(item, exam_label, noindex=False, prev_item=None, next_it
             "@type": "Question",
             "name": plain_text,
             "text": plain_text,
+            "answerCount": 1,
+            "upvoteCount": 0,
+            "datePublished": published_date,
+            "author": author_org,
             "acceptedAnswer": {
                 "@type": "Answer",
                 "text": item.get("explanation") or "解説準備中",
+                "url": canonical,
+                "upvoteCount": 0,
+                "datePublished": published_date,
+                "author": author_org,
             },
         },
     }
