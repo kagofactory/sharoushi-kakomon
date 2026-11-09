@@ -1,0 +1,84 @@
+{
+ "r2016": {
+  "s0": "AADDEDBDEC",
+  "s1": "CBDDCBBEAC",
+  "s2": "AAACBEAECB",
+  "s3": "BBEBACBAED",
+  "s4": "BBDACAEDEC",
+  "s5": "ABEDCBADDE",
+  "s6": "DCECAEBABD"
+ },
+ "r2024": {
+  "s0": "DCEACDABDC",
+  "s1": "ADCDC?BEBD",
+  "s2": "ABDCEAECDD",
+  "s3": "DABECEDBBC",
+  "s4": "EBEBEDDBCD",
+  "s5": "CBDCCADCED",
+  "s6": "CCABDEDBDE"
+ },
+ "r2025": {
+  "s0": "DDAEAEDDCE",
+  "s1": "BCDEEEBCDE",
+  "s2": "BDBBAAAEAD",
+  "s3": "ABEDBEEDAD",
+  "s4": "EBCCDEDEBB",
+  "s5": "CEBCDDBECD",
+  "s6": "BBEDDDBCEE"
+ },
+ "r2017": {
+  "s0": "ABDBCDCABE",
+  "s1": "ADCDBEBCBC",
+  "s2": "BCAEEDCDAD",
+  "s3": "DBCAABEADC",
+  "s4": "CEDABBABCD",
+  "s5": "BCCDAEDBEA",
+  "s6": "BEDCADDCEB"
+ },
+ "r2018": {
+  "s0": "BCCDAEBCDE",
+  "s1": "ACEADEBCCE",
+  "s2": "EDBACEADBC",
+  "s3": "AEDCBEBADD",
+  "s4": "DDBBDACEBA",
+  "s5": "DBBDCBADEC",
+  "s6": "AEDCCBCDAE"
+ },
+ "r2020": {
+  "s0": "DDBDDBBCEA",
+  "s1": "BBCEA*DCDA",
+  "s2": "DACEDCEECD",
+  "s3": "DCEBBDCBDB",
+  "s4": "ABBDEAECCD",
+  "s5": "DADAECECBE",
+  "s6": "BDEBDDCDCA"
+ },
+ "r2021": {
+  "s0": "EACEABEEDC",
+  "s1": "BCDDAAEDCC",
+  "s2": "DAEBBEADEC",
+  "s3": "BCBCDACDAE",
+  "s4": "BDECABDAEB",
+  "s5": "CEABEDDEBD",
+  "s6": "BEABCBAECB"
+ },
+ "r2022": {
+  "s0": "EEBCAADCAB",
+  "s1": "CEDEBDDEAB",
+  "s2": "BDCCEEAACB",
+  "s3": "ECDACEBBCD",
+  "s4": "DACED?BEB?",
+  "s5": "BEEDDDBEBE",
+  "s6": "BDDECEAEDB"
+ },
+ "r2023": {
+  "s0": "EEABACCEDA",
+  "s1": "ECEBDEEEDC",
+  "s2": "EABCCDACAE",
+  "s3": "CBAEDCDDEB",
+  "s4": "ABDECCDDAB",
+  "s5": "AAEDBACDDB",
+  "s6": "DCCABCACDC"
+ },
+ "_note": "実施団体公表の「合格基準及び正答」の択一式正答（科目 s0=労基・安衛 s1=労災 s2=雇用 s3=一般常識 s4=健保 s5=厚年 s6=国年、各10問）。?=複数正答、*=全員正解。r2019（第51回）は原本未入手のため未収録。2026-11-09収集。"
+}
